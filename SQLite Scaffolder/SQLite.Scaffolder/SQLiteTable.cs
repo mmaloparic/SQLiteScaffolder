@@ -1,4 +1,5 @@
-﻿using SQLite.Scaffolder.SQL;
+﻿using SQLite.Scaffolder.Components;
+using SQLite.Scaffolder.SQL;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SQLite.Scaffolder
 {
-    public class SQLiteTable<T> where T : SQLiteEntity
+    public class SQLiteTable<T> where T : SQLiteEntity, new()
     {
         private SQLiteDatabase Database;
 
@@ -34,7 +35,7 @@ namespace SQLite.Scaffolder
             if (entity != null)
             {
                 SQLGenerator sqlGenerator = new SQLGenerator();
-                SQLiteCommand insertEntitySQL = sqlGenerator.GetInsertCommand<T>(Database.DatabaseDefinition, entity);
+                SQLiteCommand insertEntitySQL = sqlGenerator.GenerateInsertCommand<T>(Database.DatabaseDefinition, entity);
                 Database.SendQueryNoResponse(insertEntitySQL);
                 report.IsSuccess = true;
                 report.Message = string.Format("'{0}' was inserted with success", entity.GetType().Name);
@@ -68,7 +69,7 @@ namespace SQLite.Scaffolder
                 {       
                     try
                     {
-                        SQLiteCommand insertEntitySQL = sqlGenerator.GetInsertCommand<T>(Database.DatabaseDefinition, entity);
+                        SQLiteCommand insertEntitySQL = sqlGenerator.GenerateInsertCommand<T>(Database.DatabaseDefinition, entity);
                         Database.SendQueryNoResponse(insertEntitySQL, true);
                     }         
                     catch(Exception ex)
@@ -93,23 +94,40 @@ namespace SQLite.Scaffolder
             return report;
         }
 
-        public IEnumerable<T> Get()
+        public IEnumerable<T> GetAll()
         {
-            throw new NotImplementedException();
-        }        
+            List<T> resultsList = new List<T>();
 
-        public IEnumerable<T> Where(string sql)
-        {
-            throw new NotImplementedException();
+            SQLGenerator sqlGenerator = new SQLGenerator();
+            SQLiteCommand sqlSelectQuery = sqlGenerator.GenerateSelectAllCommand<T>(Database.DatabaseDefinition);
+            TableDefinition matchingTable = Database.DatabaseDefinition.Tables.First(t => t.UserDefinedClass == typeof(T));
 
-            /*
-            string sqlSelectStatement = "SELECT * FROM {0}";
-            string sqlFullStatement = sqlSelectStatement + sql;
-            SQLiteCommand command = new SQLiteCommand(sqlFullStatement, Database.SQLiteConnection);
-            SQLiteDataReader data = Database.SendQueryGetResponse(command);
+            var dataReader = Database.SendQueryGetResponse(sqlSelectQuery);
 
-            return null;
-            */
-        }
+            if(dataReader != null)
+            {
+                while (dataReader.Read())
+                {
+                    T nextEntity = new T();
+
+                    foreach(ColumnDefinition nextColumn in matchingTable.Columns)
+                    {
+                        int columnIndex = dataReader.GetOrdinal(nextColumn.Name);
+
+
+                        //switch(nextColumn.Type)
+                        //{
+                        //    case DataType.Text:
+                        //        {
+                        //            if(typeof(nextColumn.UserDefinedClass) == 
+                        //            break;
+                        //        }
+                        //}
+                    }
+                }
+            }            
+
+            return resultsList;
+        }   
     }
 }

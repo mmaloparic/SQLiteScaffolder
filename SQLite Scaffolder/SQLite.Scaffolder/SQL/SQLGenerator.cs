@@ -37,7 +37,7 @@ namespace SQLite.Scaffolder.SQL
         /// <param name="databaseDefinition">Database definition from which to extract data about the entity being inserted</param>
         /// <param name="entity">Entity that you want to insert</param>
         /// <returns>Returns a <see cref="SQLiteCommand"/> object that contains the insert query</returns>
-        internal SQLiteCommand GetInsertCommand<T>(DatabaseDefinition databaseDefinition, T entity) where T : SQLiteEntity
+        internal SQLiteCommand GenerateInsertCommand<T>(DatabaseDefinition databaseDefinition, T entity) where T : SQLiteEntity
         {
             //find the entity table definition from the database definition
             TableDefinition matchingTable = databaseDefinition.Tables.First(t => t.UserDefinedClass == typeof(T));
@@ -271,6 +271,21 @@ namespace SQLite.Scaffolder.SQL
             }
 
             return insertCommand;
+        }
+
+        /// <summary>
+        /// Generates a SQL query that will select all entities of the specified type
+        /// </summary>
+        /// <typeparam name="T">Type that you want to retrieve</typeparam>
+        /// <param name="databaseDefinition">Database definition from which to extract data about the entity being retrieved</param>
+        /// <returns></returns>
+        internal SQLiteCommand GenerateSelectAllCommand<T>(DatabaseDefinition databaseDefinition)
+        {
+            //find the entity table definition from the database definition
+            TableDefinition matchingTable = databaseDefinition.Tables.First(t => t.UserDefinedClass == typeof(T));
+
+            string sql = string.Format("SELECT * FROM {0}", matchingTable.Name);
+            return new SQLiteCommand(sql);
         }
 
 
