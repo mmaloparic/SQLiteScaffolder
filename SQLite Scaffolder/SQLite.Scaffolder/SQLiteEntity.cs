@@ -8,11 +8,5 @@ namespace SQLite.Scaffolder
 {
     public abstract class SQLiteEntity
     {
-        SQLiteDatabase database;
-
-        public SQLiteEntity(SQLiteDatabase database)
-        {
-
-        }
     }
 }

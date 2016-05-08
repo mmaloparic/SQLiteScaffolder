@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLite.Scaffolder.SQL;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
@@ -12,14 +13,84 @@ namespace SQLite.Scaffolder
     {
         private SQLiteDatabase Database;
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="SQLite.Scaffolder.SQLiteDatabase"/> class.
+        /// </summary>
+        /// <param name="database">Pass in the database that this table will be part of </param>
+        /// <example><code>SQLiteTable Customers = new SQLiteTable(this);</code></example>
         public SQLiteTable(SQLiteDatabase database)
         {
             Database = database;
         }
 
-        public void Insert(T entity)
+        /// <summary>
+        /// Inserts a new entity in to the SQLite database
+        /// </summary>
+        /// <param name="entity">Entity that you want to insert</param>
+        public SQLiteOperationReport Insert(T entity)
         {
-            throw new NotImplementedException();
+            SQLiteOperationReport report = new SQLiteOperationReport();
+
+            if (entity != null)
+            {
+                SQLGenerator sqlGenerator = new SQLGenerator();
+                SQLiteCommand insertEntitySQL = sqlGenerator.GetInsertCommand<T>(Database.DatabaseDefinition, entity);
+                Database.SendQueryNoResponse(insertEntitySQL);
+                report.IsSuccess = true;
+                report.Message = string.Format("'{0}' was inserted with success", entity.GetType().Name);
+                report.Errors = new List<string>();
+            }
+            else
+            {
+                report.IsSuccess = false;
+                report.Message = string.Format("Entity you specified was null. Operation aborted", entity.GetType().Name);
+                report.Errors = new List<string>() { "Entity you passed in as parameter was null. There was nothing to insert." };
+            }
+
+            return report;
+        }
+
+        /// <summary>
+        /// Inserts a multiple entities in to the SQLite database by opening a transaction and closing it after finishing the work.
+        /// </summary>
+        /// <param name="entity">List of entities that you want to insert</param>
+        public SQLiteOperationReport InsertRange(List<T> entities)
+        {
+            SQLiteOperationReport report = new SQLiteOperationReport();
+            report.Errors = new List<string>();
+
+            if (entities != null)
+            {
+                SQLGenerator sqlGenerator = new SQLGenerator();
+                Database.SendQueryNoResponse(new SQLiteCommand("BEGIN TRANSACTION"), true);
+
+                foreach (var entity in entities)
+                {       
+                    try
+                    {
+                        SQLiteCommand insertEntitySQL = sqlGenerator.GetInsertCommand<T>(Database.DatabaseDefinition, entity);
+                        Database.SendQueryNoResponse(insertEntitySQL, true);
+                    }         
+                    catch(Exception ex)
+                    {
+                        report.Errors.Add(ex.Message + " | Stacktrace: " + ex.StackTrace);
+                    }                                     
+                }
+
+                Database.SendQueryNoResponse(new SQLiteCommand("END TRANSACTION"), true);
+                Database.CloseConnection();
+
+                report.IsSuccess = true;
+                report.Message = report.Errors.Any() ? "Operation completed with some errors" : "Operation completed";
+            }
+            else
+            {
+                report.IsSuccess = false;
+                report.Message = "List you specified was null. Operation aborted";
+                report.Errors = new List<string>() { "Entity you passed in as parameter was null. There was nothing to insert." };
+            }
+
+            return report;
         }
 
         public IEnumerable<T> Get()

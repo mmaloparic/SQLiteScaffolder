@@ -4,8 +4,8 @@ G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder.Exampl
 G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder.Example\bin\Debug\SQLite.Scaffolder.dll
 G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder.Example\bin\Debug\SQLite.Scaffolder.pdb
 G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder.Example\obj\Debug\SQLite.Scaffolder.Example.csprojResolveAssemblyReference.cache
-G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder.Example\obj\Debug\SQLite.Scaffolder.Example.Demo.resources
 G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder.Example\obj\Debug\SQLite.Scaffolder.Example.Properties.Resources.resources
 G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder.Example\obj\Debug\SQLite.Scaffolder.Example.csproj.GenerateResource.Cache
 G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder.Example\obj\Debug\SQLite.Scaffolder.Example.exe
 G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder.Example\obj\Debug\SQLite.Scaffolder.Example.pdb
+G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder.Example\obj\Debug\SQLite.Scaffolder.Example.DevForm.resources

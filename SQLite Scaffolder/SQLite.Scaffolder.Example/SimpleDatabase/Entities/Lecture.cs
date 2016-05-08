@@ -19,9 +19,7 @@ namespace SQLite.Scaffolder.Example.SimpleDatabase.Entities
         [SQLiteColumnInfo("Description", DataType.Text)]
         public string Description { get; set; }
 
-        public Lecture(SQLiteDatabase database) : base(database)
-        {
-
-        }
+        [SQLiteColumnInfo("Image", DataType.Blob)]
+        public byte[] ImageBytes { get; set; }
     }
 }

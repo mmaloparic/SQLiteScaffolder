@@ -1,9 +1,11 @@
 ﻿using SQLite.Scaffolder.Example.SimpleDatabase;
+using SQLite.Scaffolder.Example.SimpleDatabase.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,13 +24,12 @@ namespace SQLite.Scaffolder.Example
         {
             UniversityDatabase database = new UniversityDatabase("UniversityDatabase");
             database.CreateNewFile();
-            
+
         }
 
         private void button2_Click(object sender, EventArgs e)
-        {
-            UniversityDatabase database = new UniversityDatabase("UniversityDatabase");
-            var response = database.SendQueryGetResponse(new System.Data.SQLite.SQLiteCommand("SELECT name FROM my_db.sqlite_master WHERE type='table';"));
+        {           
+
         }
     }
 }

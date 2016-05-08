@@ -57,6 +57,13 @@
     <Compile Include="Enum\PrimaryKey.cs" />
     <Compile Include="Enum\Unique.cs" />
     <Compile Include="Exceptions\MissingAttributeException.cs" />
+    <Compile Include="Exceptions\MultipleColumnsWithSameNameException.cs" />
+    <Compile Include="Exceptions\MultipleTablesWithSameNameException.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="SQLiteEntity.cs" />
     <Compile Include="SQLiteColumnInfo.cs" />
     <Compile Include="SQLiteOperationReport.cs" />
@@ -69,7 +76,12 @@
     <Compile Include="SQL\SQLGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.101.0\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.101.0\build\net451\System.Data.SQLite.Core.targets')" />

@@ -13,7 +13,7 @@ namespace SQLite.Scaffolder.Example.SimpleDatabase
         {
             Lectures = new SQLiteTable<Lecture>(this);
             Professors = new SQLiteTable<Professor>(this);
-            Students = new SQLiteTable<Student>(this);
+            Students = new SQLiteTable<Student>(this);            
         }
         
         public SQLiteTable<Lecture> Lectures { get; set; }

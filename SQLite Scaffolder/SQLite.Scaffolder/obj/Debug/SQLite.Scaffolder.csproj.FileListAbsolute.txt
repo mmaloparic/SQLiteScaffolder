@@ -5,3 +5,4 @@ G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder\bin\De
 G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder\obj\Debug\SQLite.Scaffolder.dll
 G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder\obj\Debug\SQLite.Scaffolder.pdb
 G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder\obj\Debug\SQLite.Scaffolder.csprojResolveAssemblyReference.cache
+G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder\bin\Debug\SQLite.Scaffolder.dll.config
