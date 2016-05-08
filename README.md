@@ -1,2 +1,2 @@
 # SQLiteScaffolder
-C# code library that allows users to use code-first approach when using SQLite
+C# library that allows users to apply code-first approach when using SQLite 

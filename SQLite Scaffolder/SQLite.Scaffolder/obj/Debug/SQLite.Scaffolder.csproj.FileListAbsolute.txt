@@ -1,0 +1,7 @@
+G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder\bin\Debug\SQLite.Scaffolder.dll
+G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder\bin\Debug\SQLite.Scaffolder.pdb
+G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder\bin\Debug\System.Data.SQLite.dll
+G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder\bin\Debug\System.Data.SQLite.xml
+G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder\obj\Debug\SQLite.Scaffolder.dll
+G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder\obj\Debug\SQLite.Scaffolder.pdb
+G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder\obj\Debug\SQLite.Scaffolder.csprojResolveAssemblyReference.cache
