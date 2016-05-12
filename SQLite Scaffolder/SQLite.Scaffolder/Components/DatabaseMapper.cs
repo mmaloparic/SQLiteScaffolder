@@ -48,6 +48,12 @@ namespace SQLite.Scaffolder.Components
                     if (tableInfoAttribute != null)
                     {
                         nextTable.Name = tableInfoAttribute.Name;
+
+                        //check if there is alredy a table with the same name
+                        if(databaseDefinition.Tables.Any(t => t.Name == nextTable.Name))
+                        {
+                            throw new MultipleTablesWithSameNameException(string.Format("Database cannot contain multiple tables with identical names! Table name duplicate = '{0}'", nextTable.Name));
+                        }
                     }
                     else
                     {
@@ -76,6 +82,12 @@ namespace SQLite.Scaffolder.Components
                         nextColumn.IsNullable = columnInfoAttribute.IsNullable;
                         nextColumn.IsPrimaryKey = columnInfoAttribute.IsPrimaryKey;
                         nextColumn.IsUnique = columnInfoAttribute.IsUnique;
+
+                        //check if there is already a column with the same name in the table
+                        if(nextTable.Columns.Any(c => c.Name == nextColumn.Name))
+                        {
+                            throw new MultipleColumnsWithSameNameException(string.Format("Tables cannot contain multiple columns with the same name! Table = '{0}', Offending column = '{1}'", nextTable.Name, nextColumn.Name));
+                        }
 
                         nextTable.Columns.Add(nextColumn);
                     }

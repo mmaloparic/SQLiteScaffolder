@@ -10,10 +10,6 @@ namespace SQLite.Scaffolder.Example.SimpleDatabase.Entities
     [SQLiteTableInfo("Student")]
     public class Student : SQLiteEntity
     {
-        public Student(SQLiteDatabase database) : base(database)
-        {
-        }
-
         [SQLiteColumnInfo("ID", DataType.Text, Unique.Yes, PrimaryKey.Yes)]
         public Guid ID { get; set; }
 
