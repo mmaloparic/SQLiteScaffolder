@@ -295,10 +295,19 @@ namespace SQLite.Scaffolder.SQL
             {
                 sql += string.Format(" ORDER BY {0} {1}", orderbyParameterName, descending ? "DESC" : "ASC");
             }
-
+            
             return new SQLiteCommand(sql);
         }
 
+        internal SQLiteCommand GenerateUpdateCommand<T>(DatabaseDefinition databaseDefinition, T entity)
+        {
+            //find the entity table definition from the database definition
+            TableDefinition matchingTable = databaseDefinition.Tables.First(t => t.UserDefinedClass == typeof(T));
+
+            //string sql = string.Format("UPDATE {0} SET {1} WHERE {2}", )
+
+            throw new NotImplementedException();
+        }
 
 
         //PRIVATE METHODS
@@ -368,5 +377,7 @@ namespace SQLite.Scaffolder.SQL
 
             return dataType;
         }
+
+        
     }
 }

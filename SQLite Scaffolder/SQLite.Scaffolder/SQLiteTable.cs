@@ -391,5 +391,21 @@ namespace SQLite.Scaffolder
 
             return resultsList;
         }
+
+        /// <summary>
+        /// Updates the entity that that you plug in by finding it in the database via its primary key(s) and replacing the old values with the new ones.
+        /// </summary>
+        /// <param name="entity">Entity that you want to update. Values contained in this object will replace the values of the object that is currently in the database.
+        /// Primary key(s) are used to find the object in the database, so that primary key(s) should be left intact. </param>
+        /// <returns></returns>
+        public SQLiteOperationReport Update(T entity)
+        {
+            SQLiteOperationReport report = new SQLiteOperationReport();
+            report.Errors = new List<string>();
+
+            SQLGenerator sqlGenerator = new SQLGenerator();
+            SQLiteCommand updateCommand = sqlGenerator.GenerateUpdateCommand(entity);
+
+        }
     }
 }
