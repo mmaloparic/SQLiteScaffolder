@@ -62,7 +62,7 @@ namespace SQLite.Scaffolder.SQL
                     {
                         case DataType.Integer:
                             {
-                                if (propertyType == typeof(int))
+                                if (propertyType == typeof(int) || propertyType == typeof(int?))
                                 {
                                     string parameterNamePlaceholder = string.Format("@parameter{0}", parameterIndex);
                                     valuesPlaceholderList += parameterNamePlaceholder + ",";
@@ -76,7 +76,7 @@ namespace SQLite.Scaffolder.SQL
                                     continue;
                                 }
 
-                                if (propertyType == typeof(long))
+                                if (propertyType == typeof(long) || propertyType == typeof(long?))
                                 {
                                     string parameterNamePlaceholder = string.Format("@parameter{0}", parameterIndex);
                                     valuesPlaceholderList += parameterNamePlaceholder + ",";
@@ -90,7 +90,7 @@ namespace SQLite.Scaffolder.SQL
                                     continue;
                                 }
 
-                                if (propertyType == typeof(short))
+                                if (propertyType == typeof(short) || propertyType == typeof(short?))
                                 {
                                     string parameterNamePlaceholder = string.Format("@parameter{0}", parameterIndex);
                                     valuesPlaceholderList += parameterNamePlaceholder + ",";
@@ -108,7 +108,7 @@ namespace SQLite.Scaffolder.SQL
 
                         case DataType.Real:
                             {
-                                if (propertyType == typeof(decimal))
+                                if (propertyType == typeof(decimal) || propertyType == typeof(decimal?))
                                 {
                                     string parameterNamePlaceholder = string.Format("@parameter{0}", parameterIndex);
                                     valuesPlaceholderList += parameterNamePlaceholder + ",";
@@ -122,7 +122,7 @@ namespace SQLite.Scaffolder.SQL
                                     continue;
                                 }
 
-                                if (propertyType == typeof(float))
+                                if (propertyType == typeof(float) || propertyType == typeof(float?))
                                 {
                                     string parameterNamePlaceholder = string.Format("@parameter{0}", parameterIndex);
                                     valuesPlaceholderList += parameterNamePlaceholder + ",";
@@ -136,7 +136,7 @@ namespace SQLite.Scaffolder.SQL
                                     continue;
                                 }
 
-                                if (propertyType == typeof(double))
+                                if (propertyType == typeof(double) || propertyType == typeof(double?))
                                 {
                                     string parameterNamePlaceholder = string.Format("@parameter{0}", parameterIndex);
                                     valuesPlaceholderList += parameterNamePlaceholder + ",";
@@ -168,7 +168,7 @@ namespace SQLite.Scaffolder.SQL
                                     continue;
                                 }
 
-                                if (propertyType == typeof(Guid))
+                                if (propertyType == typeof(Guid) || propertyType == typeof(Guid?))
                                 {
                                     string parameterNamePlaceholder = string.Format("@parameter{0}", parameterIndex);
                                     valuesPlaceholderList += parameterNamePlaceholder + ",";
@@ -188,7 +188,7 @@ namespace SQLite.Scaffolder.SQL
 
                         case DataType.DateTime:
                             {
-                                if (propertyType == typeof(DateTime))
+                                if (propertyType == typeof(DateTime) || propertyType == typeof(DateTime?))
                                 {
                                     string parameterNamePlaceholder = string.Format("@parameter{0}", parameterIndex);
                                     valuesPlaceholderList += parameterNamePlaceholder + ",";
@@ -207,7 +207,7 @@ namespace SQLite.Scaffolder.SQL
 
                         case DataType.Boolean:
                             {
-                                if (propertyType == typeof(int))
+                                if (propertyType == typeof(bool) || propertyType == typeof(bool?))
                                 {
                                     string parameterNamePlaceholder = string.Format("@parameter{0}", parameterIndex);
                                     valuesPlaceholderList += parameterNamePlaceholder + ",";
