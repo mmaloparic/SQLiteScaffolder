@@ -95,13 +95,27 @@ namespace SQLite.Scaffolder
             return report;
         }
 
-        public IEnumerable<T> GetAll()
+        /// <summary>
+        /// Selects all entities of specified type from the database. 
+        /// You can optionaly add a "where" condition to qualify only specific objects from the database.
+        /// Additional, you can plug in the optional parameter for "order by" clause, which will sort the entites before returning them.
+        /// </summary>
+        /// <param name="whereCondition">
+        /// Optional parameter. Qualifies only those object in the database that match the specified condition.
+        /// For example, "ID = 10" would be resolved as 'WHERE ID = 10' and would only return that object whose value in the ID column is equal to 10
+        /// </param>
+        /// <param name="orderByCondition">Optional parameter. Orders the queried objects according to your condition. 
+        /// For example, typing in "Age" would be resolve to "ORDER BY Age" in the database, which would order the queried objects by the value in their Age column
+        /// </param>
+        /// <param name="descending">Optional parameter. If set to true, queried objects will be order in a descending order. If set to false, they will be ordered in ascending order.</param>
+        /// <returns></returns>
+        public IEnumerable<T> SelectAll(string whereCondition = "", string orderByCondition = "", bool descending = false)
         {
             List<T> resultsList = new List<T>();
 
             //generate the SELECT command
             SQLGenerator sqlGenerator = new SQLGenerator();
-            SQLiteCommand sqlSelectQuery = sqlGenerator.GenerateSelectAllCommand<T>(Database.DatabaseDefinition);
+            SQLiteCommand sqlSelectQuery = sqlGenerator.GenerateSelectAllCommand<T>(Database.DatabaseDefinition, whereCondition, orderByCondition, descending);
 
             //get the table definition from the database definition map
             TableDefinition matchingTable = Database.DatabaseDefinition.Tables.First(t => t.UserDefinedClass == typeof(T));
