@@ -276,15 +276,26 @@ namespace SQLite.Scaffolder.SQL
         /// <summary>
         /// Generates a SQL query that will select all entities of the specified type
         /// </summary>
-        /// <typeparam name="T">Type that you want to retrieve</typeparam>
+        /// <typeparam name="T">Entity that you want to retrieve</typeparam>
         /// <param name="databaseDefinition">Database definition from which to extract data about the entity being retrieved</param>
         /// <returns></returns>
-        internal SQLiteCommand GenerateSelectAllCommand<T>(DatabaseDefinition databaseDefinition)
+        internal SQLiteCommand GenerateSelectAllCommand<T>(DatabaseDefinition databaseDefinition, string whereCondition, string orderbyParameterName, bool descending)
         {
             //find the entity table definition from the database definition
             TableDefinition matchingTable = databaseDefinition.Tables.First(t => t.UserDefinedClass == typeof(T));
 
             string sql = string.Format("SELECT * FROM {0}", matchingTable.Name);
+
+            if(!string.IsNullOrEmpty(whereCondition))
+            {
+                sql += string.Format(" WHERE {0}", whereCondition);
+            }
+
+            if(!string.IsNullOrEmpty(orderbyParameterName))
+            {
+                sql += string.Format(" ORDER BY {0} {1}", orderbyParameterName, descending ? "DESC" : "ASC");
+            }
+
             return new SQLiteCommand(sql);
         }
 

@@ -75,7 +75,15 @@ namespace SQLite.Scaffolder
 
                 SQLiteCommand command = query;
                 command.Connection = this.SQLiteConnection;
-                command.ExecuteNonQuery();
+                try
+                {
+                    command.ExecuteNonQuery();
+                }
+                catch(Exception ex)
+                {
+                    throw ex;
+                }
+                
 
                 if (keepConnectionAlive == false)
                 {

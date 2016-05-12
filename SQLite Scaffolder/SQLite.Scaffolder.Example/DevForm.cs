@@ -30,7 +30,17 @@ namespace SQLite.Scaffolder.Example
         private void button2_Click(object sender, EventArgs e)
         {      
             UniversityDatabase database = new UniversityDatabase("UniversityDatabase");
-            List<Lecture> lectures = database.Lectures.GetAll().ToList();
+
+            //Lecture lec = new Lecture();
+
+            //lec.ID = Guid.NewGuid();
+            //lec.Name = "Mathematics";
+            //lec.Description = "Mathematics course";
+            //lec.ImageBytes = new byte[0];
+
+            //database.Lectures.Insert(lec);
+
+            List<Lecture> lectures = database.Lectures.SelectAll("Name = 'Demo lecture'", "Name", true).ToList();
         }
     }
 }
