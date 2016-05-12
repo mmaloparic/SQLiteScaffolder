@@ -20,3 +20,5 @@ C:\Users\Mehmed Maloparić\Documents\SQLiteScaffolder\SQLite Scaffolder\SQLite.S
 C:\Users\Mehmed Maloparić\Documents\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder.Example\obj\Debug\SQLite.Scaffolder.Example.csproj.GenerateResource.Cache
 C:\Users\Mehmed Maloparić\Documents\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder.Example\obj\Debug\SQLite.Scaffolder.Example.exe
 C:\Users\Mehmed Maloparić\Documents\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder.Example\obj\Debug\SQLite.Scaffolder.Example.pdb
+C:\Users\Mehmed Maloparić\Documents\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder.Example\bin\Debug\System.Data.SQLite.dll
+C:\Users\Mehmed Maloparić\Documents\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder.Example\bin\Debug\System.Data.SQLite.xml
