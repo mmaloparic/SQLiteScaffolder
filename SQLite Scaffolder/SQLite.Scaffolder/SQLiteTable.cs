@@ -128,6 +128,7 @@ namespace SQLite.Scaffolder
                 {
                     //create a new instance of the user-defined entity...
                     T nextEntity = new T();
+                    nextEntity.Original = new T();
 
                     //...and populate it's properties by finding them according their name, which we know is unique because of the constraints
                     foreach (ColumnDefinition nextColumn in matchingTable.Columns)
@@ -148,6 +149,7 @@ namespace SQLite.Scaffolder
                                     if (matchingProperty.PropertyType == typeof(int) && matchingValue != null)
                                     {
                                         matchingProperty.SetValue(nextEntity, (int)matchingValue);
+                                        matchingProperty.SetValue(nextEntity.Original, (int)matchingValue);
                                         continue;
                                     }
 
@@ -157,12 +159,14 @@ namespace SQLite.Scaffolder
                                         if(matchingValue == null)
                                         {
                                             matchingProperty.SetValue(nextEntity, null);
+                                            matchingProperty.SetValue(nextEntity.Original, null);
                                             continue;
 
                                         }
                                         else
                                         {
                                             matchingProperty.SetValue(nextEntity, (int?)matchingValue);
+                                            matchingProperty.SetValue(nextEntity.Original, (int?)matchingValue);
                                             continue;
                                         }
                                     }
@@ -171,6 +175,7 @@ namespace SQLite.Scaffolder
                                     if (matchingProperty.PropertyType == typeof(short) && matchingValue != null)
                                     {
                                         matchingProperty.SetValue(nextEntity, (short)matchingValue);
+                                        matchingProperty.SetValue(nextEntity.Original, (short)matchingValue);
                                         continue;
                                     }
 
@@ -180,12 +185,14 @@ namespace SQLite.Scaffolder
                                         if (matchingValue == null)
                                         {
                                             matchingProperty.SetValue(nextEntity, null);
+                                            matchingProperty.SetValue(nextEntity.Original, null);
                                             continue;
 
                                         }
                                         else
                                         {
                                             matchingProperty.SetValue(nextEntity, (short?)matchingValue);
+                                            matchingProperty.SetValue(nextEntity.Original, (short?)matchingValue);
                                             continue;
                                         }
                                     }
@@ -194,6 +201,7 @@ namespace SQLite.Scaffolder
                                     if (matchingProperty.PropertyType == typeof(long) && matchingValue != null)
                                     {
                                         matchingProperty.SetValue(nextEntity, (long)matchingValue);
+                                        matchingProperty.SetValue(nextEntity.Original, (long)matchingValue);
                                         continue;
                                     }
 
@@ -203,12 +211,14 @@ namespace SQLite.Scaffolder
                                         if (matchingValue == null)
                                         {
                                             matchingProperty.SetValue(nextEntity, null);
+                                            matchingProperty.SetValue(nextEntity.Original, null);
                                             continue;
 
                                         }
                                         else
                                         {
                                             matchingProperty.SetValue(nextEntity, (long?)matchingValue);
+                                            matchingProperty.SetValue(nextEntity.Original, (long?)matchingValue);
                                             continue;
                                         }
                                     }
@@ -221,6 +231,7 @@ namespace SQLite.Scaffolder
                                     if (matchingProperty.PropertyType == typeof(decimal) && matchingValue != null)
                                     {
                                         matchingProperty.SetValue(nextEntity, (decimal)matchingValue);
+                                        matchingProperty.SetValue(nextEntity.Original, (decimal)matchingValue);
                                         continue;
                                     }
 
@@ -230,12 +241,14 @@ namespace SQLite.Scaffolder
                                         if (matchingValue == null)
                                         {
                                             matchingProperty.SetValue(nextEntity, null);
+                                            matchingProperty.SetValue(nextEntity.Original, null);
                                             continue;
 
                                         }
                                         else
                                         {
                                             matchingProperty.SetValue(nextEntity, (decimal?)matchingValue);
+                                            matchingProperty.SetValue(nextEntity.Original, (decimal?)matchingValue);
                                             continue;
                                         }
                                     }
@@ -244,6 +257,7 @@ namespace SQLite.Scaffolder
                                     if (matchingProperty.PropertyType == typeof(decimal) && matchingValue != null)
                                     {
                                         matchingProperty.SetValue(nextEntity, (decimal)matchingValue);
+                                        matchingProperty.SetValue(nextEntity.Original, (decimal)matchingValue);
                                         continue;
                                     }
 
@@ -253,12 +267,14 @@ namespace SQLite.Scaffolder
                                         if (matchingValue == null)
                                         {
                                             matchingProperty.SetValue(nextEntity, null);
+                                            matchingProperty.SetValue(nextEntity.Original, null);
                                             continue;
 
                                         }
                                         else
                                         {
                                             matchingProperty.SetValue(nextEntity, (float?)matchingValue);
+                                            matchingProperty.SetValue(nextEntity.Original, (float?)matchingValue);
                                             continue;
                                         }
                                     }
@@ -267,6 +283,7 @@ namespace SQLite.Scaffolder
                                     if (matchingProperty.PropertyType == typeof(double) && matchingValue != null)
                                     {
                                         matchingProperty.SetValue(nextEntity, (double)matchingValue);
+                                        matchingProperty.SetValue(nextEntity.Original, (double)matchingValue);
                                         continue;
                                     }
 
@@ -276,12 +293,14 @@ namespace SQLite.Scaffolder
                                         if (matchingValue == null)
                                         {
                                             matchingProperty.SetValue(nextEntity, null);
+                                            matchingProperty.SetValue(nextEntity.Original, null);
                                             continue;
 
                                         }
                                         else
                                         {
                                             matchingProperty.SetValue(nextEntity, (double?)matchingValue);
+                                            matchingProperty.SetValue(nextEntity.Original, (double?)matchingValue);
                                             continue;
                                         }
                                     }
@@ -293,6 +312,7 @@ namespace SQLite.Scaffolder
                                     if (matchingProperty.PropertyType == typeof(string) && matchingValue != null)
                                     {
                                         matchingProperty.SetValue(nextEntity, (string)matchingValue);
+                                        matchingProperty.SetValue(nextEntity.Original, (string)matchingValue);
                                         continue;
                                     }
 
@@ -300,6 +320,7 @@ namespace SQLite.Scaffolder
                                     if (matchingProperty.PropertyType == typeof(Guid) && matchingValue != null)
                                     {
                                         matchingProperty.SetValue(nextEntity, new Guid((string)matchingValue));
+                                        matchingProperty.SetValue(nextEntity.Original, new Guid((string)matchingValue));
                                         continue;
                                     }
 
@@ -309,12 +330,14 @@ namespace SQLite.Scaffolder
                                         if (matchingValue == null)
                                         {
                                             matchingProperty.SetValue(nextEntity, null);
+                                            matchingProperty.SetValue(nextEntity.Original, null);
                                             continue;
 
                                         }
                                         else
                                         {
-                                            matchingProperty.SetValue(nextEntity,new Guid((string)matchingValue));
+                                            matchingProperty.SetValue(nextEntity, new Guid((string)matchingValue));
+                                            matchingProperty.SetValue(nextEntity.Original, new Guid((string)matchingValue));
                                             continue;
                                         }
                                     }
@@ -326,6 +349,7 @@ namespace SQLite.Scaffolder
                                     if (matchingProperty.PropertyType == typeof(bool) && matchingValue != null)
                                     {
                                         matchingProperty.SetValue(nextEntity, (bool)matchingValue);
+                                        matchingProperty.SetValue(nextEntity.Original, (bool)matchingValue);
                                         continue;
                                     }
 
@@ -335,12 +359,14 @@ namespace SQLite.Scaffolder
                                         if (matchingValue == null)
                                         {
                                             matchingProperty.SetValue(nextEntity, null);
+                                            matchingProperty.SetValue(nextEntity.Original, null);
                                             continue;
 
                                         }
                                         else
                                         {
                                             matchingProperty.SetValue(nextEntity, (bool?)matchingValue);
+                                            matchingProperty.SetValue(nextEntity.Original, (bool?)matchingValue);
                                             continue;
                                         }
                                     }
@@ -352,6 +378,7 @@ namespace SQLite.Scaffolder
                                     if (matchingProperty.PropertyType == typeof(DateTime) && matchingValue != null)
                                     {
                                         matchingProperty.SetValue(nextEntity, (DateTime)matchingValue);
+                                        matchingProperty.SetValue(nextEntity.Original, (DateTime)matchingValue);
                                         continue;
                                     }
 
@@ -361,12 +388,14 @@ namespace SQLite.Scaffolder
                                         if (matchingValue == null)
                                         {
                                             matchingProperty.SetValue(nextEntity, null);
+                                            matchingProperty.SetValue(nextEntity.Original, null);
                                             continue;
 
                                         }
                                         else
                                         {
                                             matchingProperty.SetValue(nextEntity, (DateTime?)matchingValue);
+                                            matchingProperty.SetValue(nextEntity.Original, (DateTime?)matchingValue);
                                             continue;
                                         }
                                     }
@@ -378,6 +407,7 @@ namespace SQLite.Scaffolder
                                     if (matchingProperty.PropertyType == typeof(byte[]) && matchingValue != null)
                                     {
                                         matchingProperty.SetValue(nextEntity, (byte[])matchingValue);
+                                        matchingProperty.SetValue(nextEntity.Original, (byte[])matchingValue);
                                         continue;
                                     }
                                     continue;
@@ -385,6 +415,7 @@ namespace SQLite.Scaffolder
                         }
                     }
 
+                    
                     resultsList.Add(nextEntity);
                 }
             }
@@ -404,7 +435,8 @@ namespace SQLite.Scaffolder
             report.Errors = new List<string>();
 
             SQLGenerator sqlGenerator = new SQLGenerator();
-            SQLiteCommand updateCommand = sqlGenerator.GenerateUpdateCommand(entity);
+            //SQLiteCommand updateCommand = sqlGenerator.GenerateUpdateCommand(entity);
+            return report;
 
         }
     }
