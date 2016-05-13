@@ -539,6 +539,28 @@ namespace SQLite.Scaffolder.SQL
             }
 
             return dataType;
-        }        
+        }
+
+        internal SQLiteCommand GenerateDeleteCommand<T>(DatabaseDefinition databaseDefinition, T entity) where T: SQLiteEntity
+        {
+            //find the entity table definition from the database definition
+            TableDefinition matchingTable = databaseDefinition.Tables.First(t => t.UserDefinedClass == typeof(T));
+
+            //generate the SQL for object deletion
+            string sqliteObjectIdentifierParamName = string.Format("@{0}", SQLConstants.SQLiteObjectIdColumnName);
+            string whereCondition = string.Format("{0} = {1}", SQLConstants.SQLiteObjectIdColumnName, sqliteObjectIdentifierParamName);
+            string sql = string.Format("DELETE FROM {0} WHERE {1}", matchingTable.Name, whereCondition);
+
+            //create the command
+            SQLiteCommand deleteCommand = new SQLiteCommand(sql);
+
+            //create the unique identifier parameter and inject it into the command
+            SQLiteParameter sqliteObjectIdentifierParameter = new SQLiteParameter(sqliteObjectIdentifierParamName, System.Data.DbType.String);
+            sqliteObjectIdentifierParameter.Value = entity.SQLiteObjectId.ToString();
+            deleteCommand.Parameters.Add(sqliteObjectIdentifierParameter);
+
+            //return the generated delete command
+            return deleteCommand;
+        }
     }
 }
