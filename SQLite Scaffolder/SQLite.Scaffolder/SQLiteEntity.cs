@@ -8,5 +8,6 @@ namespace SQLite.Scaffolder
 {
     public abstract class SQLiteEntity
     {
+        internal Guid SQLiteObjectId { get; set; }
     }
 }
