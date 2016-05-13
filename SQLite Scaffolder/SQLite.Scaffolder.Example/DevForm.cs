@@ -30,7 +30,6 @@ namespace SQLite.Scaffolder.Example
         private void button2_Click(object sender, EventArgs e)
         {      
             UniversityDatabase database = new UniversityDatabase("UniversityDatabase");
-
         }
     }
 }

@@ -438,5 +438,38 @@ namespace SQLite.Scaffolder
             return report;
 
         }
+
+        public SQLiteOperationReport Delete (T entity)
+        {
+            SQLiteOperationReport report = new SQLiteOperationReport();
+            report.Errors = new List<string>();
+
+            if(entity != null)
+            {
+                try
+                {
+                    SQLGenerator sqlGenerator = new SQLGenerator();
+                    SQLiteCommand deleteCommand = sqlGenerator.GenerateDeleteCommand<T>(Database.DatabaseDefinition, entity);
+                    Database.SendQueryNoResponse(deleteCommand);
+                    report.IsSuccess = true;
+                    report.Message = "Delete operation was a success";
+                }
+                catch(Exception ex)
+                {
+                    report.IsSuccess = false;
+                    report.Message = "Errors occured while performing the delete operation. Check the Errors list for more details";
+                    report.Errors.Add(ex.Message);
+                    report.Errors.Add(ex.StackTrace);
+                }
+            }
+            else
+            {
+                report.IsSuccess = false;
+                report.Message = "Entity is null. There is nothing to delete. Operation aborted";
+                report.Errors.Add("Entity you specified was null. There was nothing to delete. Operation aborted");
+            }
+
+            return report;
+        }
     }
 }
