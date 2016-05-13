@@ -47,6 +47,16 @@ namespace SQLite.Scaffolder.SQL
             List<SQLiteParameter> parameterValuesList = new List<SQLiteParameter>();
             int parameterIndex = 0;
 
+            //add the SQLite object id that will be used to track this object and uniquly identify it
+            columnsList += SQLConstants.SQLiteObjectIdColumnName + ",";
+            string objectUniqeIdentifierParameterPlaceholder = string.Format("@parameter{0}", parameterIndex);
+            valuesPlaceholderList += objectUniqeIdentifierParameterPlaceholder + ",";
+            SQLiteParameter objectUniqueIdentifierParameter = new SQLiteParameter(objectUniqeIdentifierParameterPlaceholder, System.Data.DbType.String);
+            objectUniqueIdentifierParameter.Value = Guid.NewGuid();
+            parameterValuesList.Add(objectUniqueIdentifierParameter);
+            parameterIndex++;
+
+            //generate insert query parts for every other user-defined column
             foreach (var column in matchingTable.Columns)
             {
                 columnsList += column.Name + ",";
@@ -279,7 +289,7 @@ namespace SQLite.Scaffolder.SQL
         /// <typeparam name="T">Entity that you want to retrieve</typeparam>
         /// <param name="databaseDefinition">Database definition from which to extract data about the entity being retrieved</param>
         /// <returns></returns>
-        internal SQLiteCommand GenerateSelectAllCommand<T>(DatabaseDefinition databaseDefinition, string whereCondition, string orderbyParameterName, bool descending)
+        internal SQLiteCommand GenerateSelectAllCommand<T>(DatabaseDefinition databaseDefinition, string whereCondition, string orderbyParameterName, bool descending) where T : SQLiteEntity
         {
             //find the entity table definition from the database definition
             TableDefinition matchingTable = databaseDefinition.Tables.First(t => t.UserDefinedClass == typeof(T));
@@ -295,8 +305,166 @@ namespace SQLite.Scaffolder.SQL
             {
                 sql += string.Format(" ORDER BY {0} {1}", orderbyParameterName, descending ? "DESC" : "ASC");
             }
-
+            
             return new SQLiteCommand(sql);
+        }
+
+        /// <summary>
+        /// Generates a SQL query that will update the values of the specified entities in database by replacing them with the new values from the entity you specified
+        /// </summary>
+        /// <typeparam name="T">Entity type that you want to update</typeparam>
+        /// <param name="databaseDefinition">Database definition from which to extract data about the entity being updated</param>
+        /// <param name="entity">Entity whose changes you want to push to database</param>
+        /// <returns></returns>
+        internal SQLiteCommand GenerateUpdateCommand<T>(DatabaseDefinition databaseDefinition, T entity) where T: SQLiteEntity
+        {
+            //find the entity table definition from the database definition
+            TableDefinition matchingTable = databaseDefinition.Tables.First(t => t.UserDefinedClass == typeof(T));
+            string updateStatements = string.Empty;
+            string whereConditions = string.Empty;
+            List<SQLiteParameter> parameterValuesList = new List<SQLiteParameter>();
+            int parameterIndex = 0;
+
+            foreach(ColumnDefinition nextColumn in matchingTable.Columns)
+            {
+                PropertyInfo propertyType = entity.GetType().GetProperties().First(p => p.GetCustomAttribute<SQLiteColumnInfo>().Name == nextColumn.Name);
+                string parameterNamePlaceholder = string.Format("@parameter{0}", parameterIndex);
+                parameterIndex++;
+
+                switch (nextColumn.Type)
+                {
+                    case DataType.Integer:
+                        {
+                            if (propertyType.PropertyType == typeof(int) || propertyType.PropertyType == typeof(int?))
+                            {
+                                SQLiteParameter nextParameter = new SQLiteParameter(parameterNamePlaceholder, System.Data.DbType.Int32);
+                                nextParameter.Value = propertyType.GetValue(entity);
+                                parameterValuesList.Add(nextParameter);
+                            }
+
+                            if (propertyType.PropertyType == typeof(long) || propertyType.PropertyType == typeof(long?))
+                            {
+                                SQLiteParameter nextParameter = new SQLiteParameter(parameterNamePlaceholder, System.Data.DbType.Int64);
+                                nextParameter.Value = propertyType.GetValue(entity);
+                                parameterValuesList.Add(nextParameter);
+                            }
+
+                            if (propertyType.PropertyType == typeof(short) || propertyType.PropertyType == typeof(short?))
+                            {
+                                SQLiteParameter nextParameter = new SQLiteParameter(parameterNamePlaceholder, System.Data.DbType.Int16);
+                                nextParameter.Value = propertyType.GetValue(entity);
+                                parameterValuesList.Add(nextParameter);
+                            }
+                            break;
+                        }
+
+                    case DataType.Real:
+                        {
+                            if (propertyType.PropertyType == typeof(decimal) || propertyType.PropertyType == typeof(decimal?))
+                            {
+                                SQLiteParameter nextParameter = new SQLiteParameter(parameterNamePlaceholder, System.Data.DbType.Decimal);
+                                nextParameter.Value = propertyType.GetValue(entity);
+                                parameterValuesList.Add(nextParameter);
+                            }
+
+                            if (propertyType.PropertyType == typeof(float) || propertyType.PropertyType == typeof(float?))
+                            {
+                                SQLiteParameter nextParameter = new SQLiteParameter(parameterNamePlaceholder, System.Data.DbType.Single);
+                                nextParameter.Value = propertyType.GetValue(entity);
+                                parameterValuesList.Add(nextParameter);
+                            }
+
+                            if (propertyType.PropertyType == typeof(double) || propertyType.PropertyType == typeof(double?))
+                            {
+                                SQLiteParameter nextParameter = new SQLiteParameter(parameterNamePlaceholder, System.Data.DbType.Double);
+                                nextParameter.Value = propertyType.GetValue(entity);
+                                parameterValuesList.Add(nextParameter);
+                            }
+                            break;
+                        }
+
+                    case DataType.Text:
+                        {
+                            if (propertyType.PropertyType == typeof(string))
+                            {
+                                SQLiteParameter nextParameter = new SQLiteParameter(parameterNamePlaceholder, System.Data.DbType.String);
+                                nextParameter.Value = propertyType.GetValue(entity);
+                                parameterValuesList.Add(nextParameter);
+                            }
+
+                            if (propertyType.PropertyType == typeof(Guid) || propertyType.PropertyType == typeof(Guid?))
+                            {
+                                //use string even if Guid exists because SQLite engine seems to mumble up and destroy a GUID, but storing it as a string keeps it intact
+                                SQLiteParameter nextParameter = new SQLiteParameter(parameterNamePlaceholder, System.Data.DbType.String);
+                                nextParameter.Value = propertyType.GetValue(entity);
+                                parameterValuesList.Add(nextParameter);
+                            }
+
+                            break;
+                        }
+
+                    case DataType.DateTime:
+                        {
+                            if (propertyType.PropertyType == typeof(DateTime) || propertyType.PropertyType == typeof(DateTime?))
+                            {
+                                SQLiteParameter nextParameter = new SQLiteParameter(parameterNamePlaceholder, System.Data.DbType.DateTime);
+                                nextParameter.Value = propertyType.GetValue(entity);
+                                parameterValuesList.Add(nextParameter);
+                            }
+
+                            break;
+                        }
+
+                    case DataType.Boolean:
+                        {
+                            if (propertyType.PropertyType == typeof(bool) || propertyType.PropertyType == typeof(bool?))
+                            {
+                                SQLiteParameter nextParameter = new SQLiteParameter(parameterNamePlaceholder, System.Data.DbType.Boolean);
+                                nextParameter.Value = propertyType.GetValue(entity);
+                                parameterValuesList.Add(nextParameter);
+                            }
+
+                            break;
+                        }
+
+                    case DataType.Blob:
+                        {
+                            if (propertyType.PropertyType == typeof(byte[]))
+                            {
+                                SQLiteParameter nextBlobParameter = new SQLiteParameter(parameterNamePlaceholder, System.Data.DbType.Binary);
+                                nextBlobParameter.Value = propertyType.GetValue(entity);
+                                parameterValuesList.Add(nextBlobParameter);
+                            }
+                            break;
+                        }
+                    default:
+                        {
+                            throw new NotSupportedException(string.Format("Data type you specified for the property matching the column '{0}' in table '{1}' is not supported by SQLiteScaffolder", nextColumn.Name, matchingTable.Name));
+                        }
+
+                }
+
+                updateStatements += string.Format("{0} = {1},", nextColumn.Name, parameterNamePlaceholder);
+            }
+
+            //clean up the update statement
+            updateStatements = updateStatements.TrimEnd(',');
+
+            string paramName = string.Format("@{0}", SQLConstants.SQLiteObjectIdColumnName);
+            whereConditions = string.Format("{0} = {1}", SQLConstants.SQLiteObjectIdColumnName, paramName);
+            SQLiteParameter sqliteObjectIdentifierParam = new SQLiteParameter(paramName, System.Data.DbType.String);
+            sqliteObjectIdentifierParam.Value = entity.SQLiteObjectId.ToString();
+            parameterValuesList.Add(sqliteObjectIdentifierParam);
+
+            string sql = string.Format("UPDATE {0} SET {1} WHERE {2}", matchingTable.Name, updateStatements, whereConditions);
+            SQLiteCommand updateCommand = new SQLiteCommand(sql);
+
+            foreach(var parameter in parameterValuesList)
+            {
+                updateCommand.Parameters.Add(parameter);
+            }
+
+            return updateCommand;
         }
 
 
@@ -305,11 +473,15 @@ namespace SQLite.Scaffolder.SQL
         private string GenerateTableCreationSQL(TableDefinition table)
         {
             StringBuilder sb = new StringBuilder();
+
+            //add a unique identifier column for tracking objects
+            sb.Append(string.Format("{0} TEXT, ", SQLConstants.SQLiteObjectIdColumnName));
+
             foreach (ColumnDefinition nextColumn in table.Columns)
             {
                 string sqlForCreatingTheColumn = GenerateColumnCreationSQL(nextColumn);
                 sb.Append(sqlForCreatingTheColumn);
-            }
+            }           
 
             string sqlForCreatingColumns = sb.ToString().TrimEnd(',');
             string sql = string.Format("CREATE TABLE {0} ({1});", table.Name, sqlForCreatingColumns);
@@ -367,6 +539,6 @@ namespace SQLite.Scaffolder.SQL
             }
 
             return dataType;
-        }
+        }        
     }
 }

@@ -35,12 +35,21 @@ namespace SQLite.Scaffolder
 
             if (entity != null)
             {
-                SQLGenerator sqlGenerator = new SQLGenerator();
-                SQLiteCommand insertEntitySQL = sqlGenerator.GenerateInsertCommand<T>(Database.DatabaseDefinition, entity);
-                Database.SendQueryNoResponse(insertEntitySQL);
-                report.IsSuccess = true;
-                report.Message = string.Format("'{0}' was inserted with success", entity.GetType().Name);
-                report.Errors = new List<string>();
+                try
+                {
+                    SQLGenerator sqlGenerator = new SQLGenerator();
+                    SQLiteCommand insertEntitySQL = sqlGenerator.GenerateInsertCommand<T>(Database.DatabaseDefinition, entity);
+                    Database.SendQueryNoResponse(insertEntitySQL);
+                    report.IsSuccess = true;
+                    report.Message = string.Format("'{0}' was inserted with success", entity.GetType().Name);
+                    report.Errors = new List<string>();
+                }
+                catch(Exception ex)
+                {
+                    report.Errors.Add(ex.Message);
+                    report.Errors.Add(ex.StackTrace);
+                }
+                
             }
             else
             {
@@ -72,17 +81,19 @@ namespace SQLite.Scaffolder
                     {
                         SQLiteCommand insertEntitySQL = sqlGenerator.GenerateInsertCommand<T>(Database.DatabaseDefinition, entity);
                         Database.SendQueryNoResponse(insertEntitySQL, true);
+                        report.IsSuccess = true;
                     }
                     catch (Exception ex)
                     {
-                        report.Errors.Add(ex.Message + " | Stacktrace: " + ex.StackTrace);
+                        report.IsSuccess = false;
+                        report.Errors.Add(ex.Message);
+                        report.Errors.Add(ex.StackTrace);
                     }
                 }
 
                 Database.SendQueryNoResponse(new SQLiteCommand("END TRANSACTION"), true);
                 Database.CloseConnection();
 
-                report.IsSuccess = true;
                 report.Message = report.Errors.Any() ? "Operation completed with some errors" : "Operation completed";
             }
             else
@@ -129,6 +140,9 @@ namespace SQLite.Scaffolder
                     //create a new instance of the user-defined entity...
                     T nextEntity = new T();
 
+                    //first get the SQLiteObject identifier ID, so we can track the this specific object
+                    nextEntity.SQLiteObjectId = new Guid((string)dataReader[SQLConstants.SQLiteObjectIdColumnName]);
+
                     //...and populate it's properties by finding them according their name, which we know is unique because of the constraints
                     foreach (ColumnDefinition nextColumn in matchingTable.Columns)
                     {
@@ -154,11 +168,10 @@ namespace SQLite.Scaffolder
                                     //nullable<int>
                                     if (matchingProperty.PropertyType == typeof(int?))
                                     {
-                                        if(matchingValue == null)
+                                        if (matchingValue == null)
                                         {
                                             matchingProperty.SetValue(nextEntity, null);
                                             continue;
-
                                         }
                                         else
                                         {
@@ -181,7 +194,6 @@ namespace SQLite.Scaffolder
                                         {
                                             matchingProperty.SetValue(nextEntity, null);
                                             continue;
-
                                         }
                                         else
                                         {
@@ -204,7 +216,6 @@ namespace SQLite.Scaffolder
                                         {
                                             matchingProperty.SetValue(nextEntity, null);
                                             continue;
-
                                         }
                                         else
                                         {
@@ -231,7 +242,6 @@ namespace SQLite.Scaffolder
                                         {
                                             matchingProperty.SetValue(nextEntity, null);
                                             continue;
-
                                         }
                                         else
                                         {
@@ -254,7 +264,6 @@ namespace SQLite.Scaffolder
                                         {
                                             matchingProperty.SetValue(nextEntity, null);
                                             continue;
-
                                         }
                                         else
                                         {
@@ -277,7 +286,6 @@ namespace SQLite.Scaffolder
                                         {
                                             matchingProperty.SetValue(nextEntity, null);
                                             continue;
-
                                         }
                                         else
                                         {
@@ -310,11 +318,10 @@ namespace SQLite.Scaffolder
                                         {
                                             matchingProperty.SetValue(nextEntity, null);
                                             continue;
-
                                         }
                                         else
                                         {
-                                            matchingProperty.SetValue(nextEntity,new Guid((string)matchingValue));
+                                            matchingProperty.SetValue(nextEntity, new Guid((string)matchingValue));
                                             continue;
                                         }
                                     }
@@ -336,7 +343,6 @@ namespace SQLite.Scaffolder
                                         {
                                             matchingProperty.SetValue(nextEntity, null);
                                             continue;
-
                                         }
                                         else
                                         {
@@ -362,7 +368,6 @@ namespace SQLite.Scaffolder
                                         {
                                             matchingProperty.SetValue(nextEntity, null);
                                             continue;
-
                                         }
                                         else
                                         {
@@ -385,11 +390,53 @@ namespace SQLite.Scaffolder
                         }
                     }
 
+
                     resultsList.Add(nextEntity);
                 }
             }
 
             return resultsList;
+        }
+
+        /// <summary>
+        /// Updates the entity that that you plug in by finding it in the database via its primary key(s) and replacing the old values with the new ones.
+        /// </summary>
+        /// <param name="entity">Entity that you want to update. Values contained in this object will replace the values of the object that is currently in the database.
+        /// Primary key(s) are used to find the object in the database, so that primary key(s) should be left intact. </param>
+        /// <returns></returns>
+        public SQLiteOperationReport Update(T entity)
+        {
+            SQLiteOperationReport report = new SQLiteOperationReport();
+            report.Errors = new List<string>();
+
+            if(entity != null)
+            {
+                SQLGenerator sqlGenerator = new SQLGenerator();
+                try
+                {
+                    SQLiteCommand updateCommand = sqlGenerator.GenerateUpdateCommand(Database.DatabaseDefinition, entity);
+                    Database.SendQueryNoResponse(updateCommand);
+                    report.IsSuccess = true;
+                    report.Message = "Operation completed.";
+                }
+                catch (Exception ex)
+                {
+                    report.IsSuccess = false;
+                    report.Message = "Update failed. Please check the Errors list for details and stack trace.";
+                    report.Errors.Add(ex.Message);
+                    report.Errors.Add(ex.StackTrace);
+                }
+            }
+            else
+            {
+                report.IsSuccess = false;
+                report.Message = "Entity is null. Operation aborted";
+                report.Errors.Add("Entity you specified was null. There was nothing to update. Operation aborted");
+            }
+            
+            
+            return report;
+
         }
     }
 }

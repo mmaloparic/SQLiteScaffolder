@@ -31,16 +31,6 @@ namespace SQLite.Scaffolder.Example
         {      
             UniversityDatabase database = new UniversityDatabase("UniversityDatabase");
 
-            //Lecture lec = new Lecture();
-
-            //lec.ID = Guid.NewGuid();
-            //lec.Name = "Mathematics";
-            //lec.Description = "Mathematics course";
-            //lec.ImageBytes = new byte[0];
-
-            //database.Lectures.Insert(lec);
-
-            List<Lecture> lectures = database.Lectures.SelectAll("Name = 'Demo lecture'", "Name", true).ToList();
         }
     }
 }
