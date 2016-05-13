@@ -11,6 +11,10 @@ using System.Threading.Tasks;
 
 namespace SQLite.Scaffolder
 {
+    /// <summary>
+    /// Represents a single table in the SQLite database. T should be a class inheriting <see cref="SQLiteEntity"/> 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class SQLiteTable<T> where T : SQLiteEntity, new()
     {
         private SQLiteDatabase Database;
@@ -80,7 +84,7 @@ namespace SQLite.Scaffolder
                     try
                     {
                         SQLiteCommand insertEntitySQL = sqlGenerator.GenerateInsertCommand<T>(Database.DatabaseDefinition, entity);
-                        Database.SendQueryNoResponse(insertEntitySQL, true);                        
+                        Database.SendQueryNoResponse(insertEntitySQL, true);
                     }
                     catch (Exception ex)
                     {
@@ -397,7 +401,7 @@ namespace SQLite.Scaffolder
         }
 
         /// <summary>
-        /// Updates the entity that that you plug in 
+        /// Updates a specific entity by replacing the values in the database with the values specified in the object.
         /// </summary>
         /// <param name="entity">Entity that you want to update. Values contained in this object will replace the values of the object that is currently in the database.</param>
         /// <returns></returns>
@@ -437,6 +441,58 @@ namespace SQLite.Scaffolder
         }
 
         /// <summary>
+        /// Updates a list of entities at once by using a transaction
+        /// </summary>
+        /// <param name="entities">Entities that you want to update. Values contained in these object will replace the values of the objects that are currently in the database.</param>
+        /// <returns></returns>
+        public SQLiteOperationReport UpdateRange(List<T> entities)
+        {
+            SQLiteOperationReport report = new SQLiteOperationReport();
+            report.Errors = new List<string>();
+
+            if (entities != null)
+            {
+                Database.SendQueryNoResponse(new SQLiteCommand("BEGIN TRANSACTION"), true);
+                foreach (T entity in entities)
+                {
+                    if (entity != null)
+                    {
+                        SQLGenerator sqlGenerator = new SQLGenerator();
+                        try
+                        {
+                            SQLiteCommand updateCommand = sqlGenerator.GenerateUpdateCommand(Database.DatabaseDefinition, entity);
+                            Database.SendQueryNoResponse(updateCommand);
+                        }
+                        catch (Exception ex)
+                        {
+                            report.Errors.Add(ex.Message);
+                            report.Errors.Add(ex.StackTrace);
+                        }
+                    }
+                    else
+                    {
+                        report.Message = "Entity is null.";
+                        report.Errors.Add("Entity you specified was null. There was nothing to update.");
+                    }
+                }
+
+                Database.SendQueryNoResponse(new SQLiteCommand("END TRANSACTION"), true);
+                Database.CloseConnection();
+
+                report.IsSuccess = report.Errors.Any() ? false : true;
+                report.Message = report.Errors.Any() ? "Operation completed with some errors" : "Operation completed";
+            }
+            else
+            {
+                report.IsSuccess = false;
+                report.Message = "List of entities was null. There was nothing to update. Operation aborted";
+                report.Errors.Add("List of entities was null. There was nothing to update. Operation aborted");
+            }
+            return report;
+
+        }
+        
+        /// <summary>
         /// Deletes the specified entity from the SQLite database
         /// </summary>
         /// <param name="entity">Entity that you want to delete</param>
@@ -475,9 +531,9 @@ namespace SQLite.Scaffolder
         }
 
         /// <summary>
-        /// Deletes the specified entity from the SQLite database
+        /// Deletes the specified entities from the SQLite database
         /// </summary>
-        /// <param name="entity">Entity that you want to delete</param>
+        /// <param name="entities">Entities that you want to delete</param>
         /// <returns></returns>
         public SQLiteOperationReport DeleteRange(List<T> entities)
         {
@@ -505,7 +561,6 @@ namespace SQLite.Scaffolder
                     }
                     else
                     {
-                        report.IsSuccess = false;
                         report.Message = "Entity is null. There is nothing to delete.";
                         report.Errors.Add("Entity you specified was null. There was nothing to delete.");
                     }
@@ -519,7 +574,7 @@ namespace SQLite.Scaffolder
             else
             {
                 report.IsSuccess = false;
-                report.Message = "Specified list of entities is null. There is nothing to delete";                
+                report.Message = "Specified list of entities is null. There is nothing to delete";
                 report.Errors.Add("Specified list of entities is null. There is nothing to delete");
             }
 
