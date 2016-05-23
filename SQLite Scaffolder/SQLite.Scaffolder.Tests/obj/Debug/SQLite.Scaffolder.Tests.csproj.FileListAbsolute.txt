@@ -1,0 +1,10 @@
+G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder.Tests\bin\Debug\SQLite.Scaffolder.Tests.dll
+G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder.Tests\bin\Debug\SQLite.Scaffolder.Tests.pdb
+G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder.Tests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder.Tests\bin\Debug\SQLite.Scaffolder.dll
+G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder.Tests\bin\Debug\System.Data.SQLite.dll
+G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder.Tests\bin\Debug\SQLite.Scaffolder.pdb
+G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder.Tests\bin\Debug\System.Data.SQLite.xml
+G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder.Tests\obj\Debug\SQLite.Scaffolder.Tests.csprojResolveAssemblyReference.cache
+G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder.Tests\obj\Debug\SQLite.Scaffolder.Tests.dll
+G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder.Tests\obj\Debug\SQLite.Scaffolder.Tests.pdb

@@ -36,6 +36,7 @@ namespace SQLite.Scaffolder
         public SQLiteOperationReport Insert(T entity)
         {
             SQLiteOperationReport report = new SQLiteOperationReport();
+            report.Errors = new List<string>();
 
             if (entity != null)
             {
@@ -46,7 +47,7 @@ namespace SQLite.Scaffolder
                     Database.SendQueryNoResponse(insertEntitySQL);
                     report.IsSuccess = true;
                     report.Message = string.Format("'{0}' was inserted with success", entity.GetType().Name);
-                    report.Errors = new List<string>();
+
                 }
                 catch (Exception ex)
                 {
@@ -170,7 +171,7 @@ namespace SQLite.Scaffolder
                                     //nullable<int>
                                     if (matchingProperty.PropertyType == typeof(int?))
                                     {
-                                        if (matchingValue == null)
+                                        if (matchingValue.GetType() == typeof(DBNull) || matchingValue == null)
                                         {
                                             matchingProperty.SetValue(nextEntity, null);
                                             continue;
@@ -192,7 +193,7 @@ namespace SQLite.Scaffolder
                                     //nullable<short>
                                     if (matchingProperty.PropertyType == typeof(short?))
                                     {
-                                        if (matchingValue == null)
+                                        if (matchingValue.GetType() == typeof(DBNull) || matchingValue == null)
                                         {
                                             matchingProperty.SetValue(nextEntity, null);
                                             continue;
@@ -214,7 +215,7 @@ namespace SQLite.Scaffolder
                                     //nullable<long>
                                     if (matchingProperty.PropertyType == typeof(long?))
                                     {
-                                        if (matchingValue == null)
+                                        if (matchingValue.GetType() == typeof(DBNull) || matchingValue == null)
                                         {
                                             matchingProperty.SetValue(nextEntity, null);
                                             continue;
@@ -233,21 +234,21 @@ namespace SQLite.Scaffolder
                                     //decimal
                                     if (matchingProperty.PropertyType == typeof(decimal) && matchingValue != null)
                                     {
-                                        matchingProperty.SetValue(nextEntity, (decimal)matchingValue);
+                                        matchingProperty.SetValue(nextEntity, Convert.ToDecimal(matchingValue));
                                         continue;
                                     }
 
                                     //nullable<decimal>
                                     if (matchingProperty.PropertyType == typeof(decimal?))
                                     {
-                                        if (matchingValue == null)
+                                        if (matchingValue.GetType() == typeof(DBNull) || matchingValue == null)
                                         {
                                             matchingProperty.SetValue(nextEntity, null);
                                             continue;
                                         }
                                         else
                                         {
-                                            matchingProperty.SetValue(nextEntity, (decimal?)matchingValue);
+                                            matchingProperty.SetValue(nextEntity, matchingValue);
                                             continue;
                                         }
                                     }
@@ -262,7 +263,7 @@ namespace SQLite.Scaffolder
                                     //nullable<float>
                                     if (matchingProperty.PropertyType == typeof(float?))
                                     {
-                                        if (matchingValue == null)
+                                        if (matchingValue.GetType() == typeof(DBNull) || matchingValue == null)
                                         {
                                             matchingProperty.SetValue(nextEntity, null);
                                             continue;
@@ -284,7 +285,7 @@ namespace SQLite.Scaffolder
                                     //nullable<double>
                                     if (matchingProperty.PropertyType == typeof(double?))
                                     {
-                                        if (matchingValue == null)
+                                        if (matchingValue.GetType() == typeof(DBNull) || matchingValue == null)
                                         {
                                             matchingProperty.SetValue(nextEntity, null);
                                             continue;
@@ -316,7 +317,7 @@ namespace SQLite.Scaffolder
                                     //nullable<Guid>
                                     if (matchingProperty.PropertyType == typeof(Guid?))
                                     {
-                                        if (matchingValue == null)
+                                        if (matchingValue.GetType() == typeof(DBNull) || matchingValue == null)
                                         {
                                             matchingProperty.SetValue(nextEntity, null);
                                             continue;
@@ -341,7 +342,7 @@ namespace SQLite.Scaffolder
                                     //nullable<bool>
                                     if (matchingProperty.PropertyType == typeof(bool?))
                                     {
-                                        if (matchingValue == null)
+                                        if (matchingValue.GetType() == typeof(DBNull) || matchingValue == null)
                                         {
                                             matchingProperty.SetValue(nextEntity, null);
                                             continue;
@@ -359,22 +360,38 @@ namespace SQLite.Scaffolder
                                     //DateTime
                                     if (matchingProperty.PropertyType == typeof(DateTime) && matchingValue != null)
                                     {
-                                        matchingProperty.SetValue(nextEntity, (DateTime)matchingValue);
-                                        continue;
+                                        string dateString = matchingValue as string;
+                                        if (!string.IsNullOrEmpty(dateString))
+                                        {
+                                            matchingProperty.SetValue(nextEntity, DateTime.Parse(dateString));
+                                            continue;
+                                        }
+                                        else
+                                        {
+                                            matchingProperty.SetValue(nextEntity, default(DateTime));
+                                        }
                                     }
 
                                     //nullable<DateTime>
                                     if (matchingProperty.PropertyType == typeof(DateTime?))
                                     {
-                                        if (matchingValue == null)
+                                        if (matchingValue.GetType() == typeof(DBNull) || matchingValue == null)
                                         {
                                             matchingProperty.SetValue(nextEntity, null);
                                             continue;
                                         }
                                         else
                                         {
-                                            matchingProperty.SetValue(nextEntity, (DateTime?)matchingValue);
-                                            continue;
+                                            string dateString = matchingValue as string;
+                                            if (!string.IsNullOrEmpty(dateString))
+                                            {
+                                                matchingProperty.SetValue(nextEntity, DateTime.Parse(dateString));
+                                                continue;
+                                            }
+                                            else
+                                            {
+                                                matchingProperty.SetValue(nextEntity, default(DateTime));
+                                            }
                                         }
                                     }
                                     continue;
@@ -384,8 +401,17 @@ namespace SQLite.Scaffolder
                                     //byte[]
                                     if (matchingProperty.PropertyType == typeof(byte[]) && matchingValue != null)
                                     {
-                                        matchingProperty.SetValue(nextEntity, (byte[])matchingValue);
-                                        continue;
+
+                                        if (matchingValue.GetType() == typeof(DBNull) || matchingValue == null)
+                                        {
+                                            matchingProperty.SetValue(nextEntity, null);
+                                            continue;
+                                        }
+                                        else
+                                        {
+                                            matchingProperty.SetValue(nextEntity, (byte[])matchingValue);
+                                            continue;
+                                        }                                       
                                     }
                                     continue;
                                 }
@@ -491,7 +517,7 @@ namespace SQLite.Scaffolder
             return report;
 
         }
-        
+
         /// <summary>
         /// Deletes the specified entity from the SQLite database
         /// </summary>
