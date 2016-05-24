@@ -289,16 +289,16 @@ namespace SQLite.Scaffolder.SQL
         /// <typeparam name="T">Entity that you want to retrieve</typeparam>
         /// <param name="databaseDefinition">Database definition from which to extract data about the entity being retrieved</param>
         /// <returns></returns>
-        internal SQLiteCommand GenerateSelectAllCommand<T>(DatabaseDefinition databaseDefinition, string whereCondition, string orderbyParameterName, bool descending) where T : SQLiteEntity
+        internal SQLiteCommand GenerateSelectAllCommand<T>(DatabaseDefinition databaseDefinition, string qualifiers, string orderbyParameterName, bool descending) where T : SQLiteEntity
         {
             //find the entity table definition from the database definition
             TableDefinition matchingTable = databaseDefinition.Tables.First(t => t.UserDefinedClass == typeof(T));
 
             string sql = string.Format("SELECT * FROM {0}", matchingTable.Name);
 
-            if(!string.IsNullOrEmpty(whereCondition))
+            if(!string.IsNullOrEmpty(qualifiers))
             {
-                sql += string.Format(" WHERE {0}", whereCondition);
+                sql += string.Format(" {0}", qualifiers);
             }
 
             if(!string.IsNullOrEmpty(orderbyParameterName))
