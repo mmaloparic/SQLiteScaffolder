@@ -489,7 +489,7 @@ namespace SQLite.Scaffolder
                         try
                         {
                             SQLiteCommand updateCommand = sqlGenerator.GenerateUpdateCommand(Database.DatabaseDefinition, entity);
-                            Database.SendQueryNoResponse(updateCommand);
+                            Database.SendQueryNoResponse(updateCommand, true);
                         }
                         catch (Exception ex)
                         {
@@ -580,7 +580,7 @@ namespace SQLite.Scaffolder
                         {
                             SQLGenerator sqlGenerator = new SQLGenerator();
                             SQLiteCommand deleteCommand = sqlGenerator.GenerateDeleteCommand<T>(Database.DatabaseDefinition, entity);
-                            Database.SendQueryNoResponse(deleteCommand);
+                            Database.SendQueryNoResponse(deleteCommand, true);
                         }
                         catch (Exception ex)
                         {
