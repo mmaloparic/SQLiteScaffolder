@@ -51,21 +51,68 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DevForm.cs">
+    <Compile Include="ExampleForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DevForm.Designer.cs">
-      <DependentUpon>DevForm.cs</DependentUpon>
+    <Compile Include="ExampleForm.Designer.cs">
+      <DependentUpon>ExampleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\InsertLecture.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\InsertLecture.Designer.cs">
+      <DependentUpon>InsertLecture.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\InsertStudentForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\InsertStudentForm.Designer.cs">
+      <DependentUpon>InsertStudentForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\LecturesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LecturesForm.Designer.cs">
+      <DependentUpon>LecturesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\LecturesSelector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LecturesSelector.Designer.cs">
+      <DependentUpon>LecturesSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\StudentsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\StudentsForm.Designer.cs">
+      <DependentUpon>StudentsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\BaseRepository.cs" />
+    <Compile Include="Repositories\LectureRepository.cs" />
+    <Compile Include="Repositories\StudentRepository.cs" />
     <Compile Include="SimpleDatabase\Entities\Lecture.cs" />
-    <Compile Include="SimpleDatabase\Entities\Professor.cs" />
     <Compile Include="SimpleDatabase\Entities\Student.cs" />
     <Compile Include="SimpleDatabase\Entities\StudentLecture.cs" />
     <Compile Include="SimpleDatabase\UniversityDatabase.cs" />
-    <EmbeddedResource Include="DevForm.resx">
-      <DependentUpon>DevForm.cs</DependentUpon>
+    <EmbeddedResource Include="ExampleForm.resx">
+      <DependentUpon>ExampleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\InsertLecture.resx">
+      <DependentUpon>InsertLecture.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\InsertStudentForm.resx">
+      <DependentUpon>InsertStudentForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LecturesForm.resx">
+      <DependentUpon>LecturesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LecturesSelector.resx">
+      <DependentUpon>LecturesSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\StudentsForm.resx">
+      <DependentUpon>StudentsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -97,9 +144,7 @@
       <Name>SQLite.Scaffolder</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.101.0\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.101.0\build\net451\System.Data.SQLite.Core.targets')" />

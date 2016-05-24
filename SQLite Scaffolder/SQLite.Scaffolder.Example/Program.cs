@@ -16,7 +16,7 @@ namespace SQLite.Scaffolder.Example
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new DevForm());
+            Application.Run(new ExampleForm());
         }
     }
 }

@@ -21,6 +21,10 @@ namespace SQLite.Scaffolder.Example.SimpleDatabase.Entities
 
         [SQLiteColumnInfo("Birthday", DataType.DateTime)]
         public DateTime Birthday { get; set; }
-        
+
+        public override string ToString()
+        {
+            return string.Format("{0} {1}", Name, Lastname);
+        }
     }
 }

@@ -21,5 +21,10 @@ namespace SQLite.Scaffolder.Example.SimpleDatabase.Entities
 
         [SQLiteColumnInfo("Image", DataType.Blob)]
         public byte[] ImageBytes { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

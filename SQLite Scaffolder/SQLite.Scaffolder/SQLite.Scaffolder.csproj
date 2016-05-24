@@ -75,6 +75,7 @@
     <Compile Include="Interfaces\ISQLGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLiteDatabase.cs" />
+    <Compile Include="SQL\SQLConstants.cs" />
     <Compile Include="SQL\SQLGenerator.cs" />
   </ItemGroup>
   <ItemGroup>

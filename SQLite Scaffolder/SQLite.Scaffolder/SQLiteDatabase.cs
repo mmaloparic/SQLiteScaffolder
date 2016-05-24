@@ -38,7 +38,7 @@ namespace SQLite.Scaffolder
         {
             this.Name = string.Empty;
             this.ConnectionString = string.Empty;
-            
+
             DatabaseMapper databaseMapper = new DatabaseMapper();
             DatabaseDefinition = databaseMapper.MapDatabase(this);
         }
@@ -52,7 +52,7 @@ namespace SQLite.Scaffolder
             Name = databaseName;
             ConnectionString = SQLiteDatabase.GenerateConnectionString(Name);
             SQLiteConnection = new SQLiteConnection(ConnectionString);
-            
+
             DatabaseMapper databaseMapper = new DatabaseMapper();
             DatabaseDefinition = databaseMapper.MapDatabase(this);
         }
@@ -75,7 +75,15 @@ namespace SQLite.Scaffolder
 
                 SQLiteCommand command = query;
                 command.Connection = this.SQLiteConnection;
-                command.ExecuteNonQuery();
+                try
+                {
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
 
                 if (keepConnectionAlive == false)
                 {
@@ -117,6 +125,7 @@ namespace SQLite.Scaffolder
             try
             {
                 SQLiteConnection.Close();
+                SQLiteConnection.ClearAllPools();
                 return true;
             }
             catch (Exception error)
@@ -150,24 +159,25 @@ namespace SQLite.Scaffolder
         public SQLiteOperationReport CreateNewFile()
         {
             try
-            {               
+            {
                 string databaseCreationInfo = string.Format("{0}", Name);
                 SQLiteConnection.CreateFile(databaseCreationInfo);
                 ConnectionString = SQLiteDatabase.GenerateConnectionString(Name);
                 bool isOpen = OpenConnection();
 
                 if (isOpen)
-                {  
+                {
                     // generate the SQL command that will create the database
                     SQLGenerator sqlGenerator = new SQLGenerator();
-                    SQLiteCommand databaseCreationCommand = sqlGenerator.CreateDatabase(DatabaseDefinition);
-                    
-                    //send the generated SQL command to the SQLite engine
-                    SendQuery(databaseCreationCommand);
+                    using (SQLiteCommand databaseCreationCommand = sqlGenerator.CreateDatabase(DatabaseDefinition))
+                    {
+                        //send the generated SQL command to the SQLite engine
+                        SendQuery(databaseCreationCommand);
 
-                    //close the connection to the database
-                    CloseConnection();
-                    return new SQLiteOperationReport { Message = string.Format("Database '{0}' created successfully", Name), IsSuccess = true, Errors = new List<string>() };
+                        //close the connection to the database
+                        CloseConnection();
+                        return new SQLiteOperationReport { Message = string.Format("Database '{0}' created successfully", Name), IsSuccess = true, Errors = new List<string>() };
+                    }
                 }
                 else
                 {
@@ -175,11 +185,11 @@ namespace SQLite.Scaffolder
                     {
                         Message = string.Format("Database '{0}' was NOT created. Check errors for more details.", Name),
                         IsSuccess = false,
-                        Errors = new List<string> {"Connection to the database was not open, when the code expected it to be in order to execute the SQL query. Operation aborted." }
+                        Errors = new List<string> { "Connection to the database was not open, when the code expected it to be in order to execute the SQL query. Operation aborted." }
                     };
                 }
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 throw exception;
             }
@@ -196,7 +206,7 @@ namespace SQLite.Scaffolder
             }
         }
 
-        
+
 
         //PRIVATE METHODS
         private void SendQuery(SQLiteCommand sqlQuery)
@@ -206,11 +216,12 @@ namespace SQLite.Scaffolder
                 SQLiteCommand command = sqlQuery;
                 command.Connection = this.SQLiteConnection;
                 command.ExecuteNonQuery();
+                command.Dispose();
             }
             else throw new Exception("SQLite connection does not exist.");
         }
-        
-       
+
+
 
         ////PUBLIC STATIC METHODS        
         /// <summary>
@@ -224,7 +235,7 @@ namespace SQLite.Scaffolder
             return string.Format("Data Source={0}.sqlite;Version={1}", databaseName, version);
         }
 
-        
+
 
     }
 }
