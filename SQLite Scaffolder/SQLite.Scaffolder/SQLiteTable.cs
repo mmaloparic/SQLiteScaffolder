@@ -78,6 +78,7 @@ namespace SQLite.Scaffolder
             if (entities != null)
             {
                 SQLGenerator sqlGenerator = new SQLGenerator();
+                Database.OpenConnection();
                 Database.SendQueryNoResponse(new SQLiteCommand("BEGIN TRANSACTION"), true);
 
                 foreach (var entity in entities)
@@ -478,6 +479,7 @@ namespace SQLite.Scaffolder
 
             if (entities != null)
             {
+                Database.OpenConnection();
                 Database.SendQueryNoResponse(new SQLiteCommand("BEGIN TRANSACTION"), true);
                 foreach (T entity in entities)
                 {
@@ -568,6 +570,7 @@ namespace SQLite.Scaffolder
 
             if (entities != null)
             {
+                Database.OpenConnection();
                 Database.SendQueryNoResponse(new SQLiteCommand("BEGIN TRANSACTION"), true);
                 foreach (T entity in entities)
                 {
