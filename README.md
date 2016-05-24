@@ -8,6 +8,11 @@ Your job as a developer would only be to define the classes that will represent 
 
 Library comes with a small example project that implements a small database and shows how to use the SQLiteScaffolder.
 
+### Can I use this in a commercial project?
+##### Yes!
+SQLiteScaffolder is **FREE** as it is distributed under the MIT licence (https://www.tldrlegal.com/l/mit) and as such means you can do pretty much whatever you want with it as long as you don't blame me for any issues that may happen from using this library. You are free to modify and redistribute the code in any way you want.
+Would appriciate if you would credit me for my work if you like the library, but no hard feelings if you dont. I'm happy to help!
+
 ### Basic usage
 0. Add a reference to ```SQLiteScaffolder DLL``` in your project
 1. Define the classes that will represent the entities inside your database
