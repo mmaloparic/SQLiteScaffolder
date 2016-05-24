@@ -170,7 +170,7 @@ Library comes with a small example project that implements a small database and 
 
 ###### Send a query that **does** return a response?
 ```C#
-        //Deletes all lectures
+        //Selects all lectures
         public List<Lecture> SelectAllLectures()
         {
             UniversityDatabase myUniversityDatabase = new UniversityDatabase("MyDatabase");
