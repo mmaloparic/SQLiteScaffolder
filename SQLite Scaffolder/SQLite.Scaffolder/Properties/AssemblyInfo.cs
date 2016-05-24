@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("SQLite.Scaffolder")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("C# library that allows users to apply code-first approach when using SQLite. SQLiteScaffolder does the heavy lifting when it comes to database and table creation, as well as packing and upacking objects for you.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyCompany("Mehmed Maloparic")]
 [assembly: AssemblyProduct("SQLite.Scaffolder")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2016")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
