@@ -1,4 +1,6 @@
 ﻿using SQLite.Scaffolder.Example.Forms;
+using SQLite.Scaffolder.Example.SimpleDatabase;
+using SQLite.Scaffolder.Example.SimpleDatabase.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -44,6 +46,6 @@ namespace SQLite.Scaffolder.Example
             LecturesForm form = new LecturesForm();
             form.MdiParent = this;
             form.Show();
-        }
+        }        
     }
 }

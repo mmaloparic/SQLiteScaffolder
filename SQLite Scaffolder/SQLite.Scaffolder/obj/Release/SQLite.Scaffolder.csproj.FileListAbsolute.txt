@@ -1,0 +1,7 @@
+G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder\bin\Release\SQLite.Scaffolder.dll.config
+G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder\bin\Release\SQLite.Scaffolder.dll
+G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder\bin\Release\SQLite.Scaffolder.pdb
+G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder\bin\Release\System.Data.SQLite.dll
+G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder\bin\Release\System.Data.SQLite.xml
+G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder\obj\Release\SQLite.Scaffolder.dll
+G:\Projects\Privatni\SQLiteScaffolder\SQLite Scaffolder\SQLite.Scaffolder\obj\Release\SQLite.Scaffolder.pdb

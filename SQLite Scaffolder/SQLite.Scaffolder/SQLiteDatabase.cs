@@ -15,6 +15,7 @@ namespace SQLite.Scaffolder
         //FIELDS
         internal SQLiteConnection SQLiteConnection = null;
         internal DatabaseDefinition DatabaseDefinition = null;
+        private string _connectionString = "";
 
 
         //PROPERTIES
@@ -26,7 +27,24 @@ namespace SQLite.Scaffolder
         /// <summary>
         /// Gets or sets the database connection string
         /// </summary>
-        public string ConnectionString { get; protected set; }
+        public string ConnectionString
+        {
+            get
+            {
+                return _connectionString;
+            }
+            set
+            {
+                string oldValue = _connectionString;
+                _connectionString = value;
+
+                //check if the connection string value changed and update it if it did
+                if(!string.IsNullOrEmpty(_connectionString) && oldValue != value)
+                {
+                    this.SQLiteConnection = new SQLiteConnection(ConnectionString);
+                }
+            }
+        }
 
 
 
@@ -44,14 +62,24 @@ namespace SQLite.Scaffolder
         }
 
         /// <summary>
-        /// Creates a new, empty instance of <see cref="SQLite.Scaffolder.SQLiteDatabase"/> class with a specific name
+        /// Creates a new, empty instance of <see cref="SQLite.Scaffolder.SQLiteDatabase"/> class with a specific name. 
+        /// Automatically creates and stores the connection string unless you specify one.
         /// </summary>
         /// <param name="databaseName">Name of the database that you want to use</param>
-        public SQLiteDatabase(string databaseName)
+        /// <param name="connectionString">Optional parameter. Custom connection string that will be used to connect to your database file.</param>
+        public SQLiteDatabase(string databaseName, string connectionString = "")
         {
             Name = databaseName;
-            ConnectionString = SQLiteDatabase.GenerateConnectionString(Name);
-            SQLiteConnection = new SQLiteConnection(ConnectionString);
+            if(string.IsNullOrEmpty(connectionString))
+            {
+                ConnectionString = SQLiteDatabase.GenerateConnectionString(Name);
+                SQLiteConnection = new SQLiteConnection(ConnectionString);
+            }
+            else
+            {
+                ConnectionString = connectionString;
+                SQLiteConnection = new SQLiteConnection(ConnectionString);
+            }            
 
             DatabaseMapper databaseMapper = new DatabaseMapper();
             DatabaseDefinition = databaseMapper.MapDatabase(this);
@@ -162,7 +190,10 @@ namespace SQLite.Scaffolder
             {
                 string databaseCreationInfo = string.Format("{0}", Name);
                 SQLiteConnection.CreateFile(databaseCreationInfo);
-                ConnectionString = SQLiteDatabase.GenerateConnectionString(Name);
+                ConnectionString = string.IsNullOrEmpty(ConnectionString) 
+                    ? SQLiteDatabase.GenerateConnectionString(Name)
+                    : ConnectionString;
+
                 bool isOpen = OpenConnection();
 
                 if (isOpen)

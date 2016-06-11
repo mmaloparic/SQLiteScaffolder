@@ -68,7 +68,7 @@
             // ToolstripAddStudent
             // 
             this.ToolstripAddStudent.Name = "ToolstripAddStudent";
-            this.ToolstripAddStudent.Size = new System.Drawing.Size(121, 22);
+            this.ToolstripAddStudent.Size = new System.Drawing.Size(152, 22);
             this.ToolstripAddStudent.Text = "Add new";
             this.ToolstripAddStudent.Click += new System.EventHandler(this.ToolstripAddStudent_Click);
             // 
@@ -84,7 +84,7 @@
             // ToolstripInsertLecture
             // 
             this.ToolstripInsertLecture.Name = "ToolstripInsertLecture";
-            this.ToolstripInsertLecture.Size = new System.Drawing.Size(152, 22);
+            this.ToolstripInsertLecture.Size = new System.Drawing.Size(121, 22);
             this.ToolstripInsertLecture.Text = "Add new";
             this.ToolstripInsertLecture.Click += new System.EventHandler(this.ToolstripInsertLecture_Click);
             // 

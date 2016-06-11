@@ -1,0 +1,5 @@
+You must copy either the 
+
+	SQLite.Interop.dll 
+
+from x64 folder if you want to use the 64bit architecture in your project
